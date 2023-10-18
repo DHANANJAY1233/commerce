@@ -26,7 +26,7 @@ function SubmitButton({
 
   if (!availableForSale) {
     return (
-      <button aria-disabled className={clsx(buttonClasses, disabledClasses)}>
+      <button aria-disabled className={clsx(buttonClasses, disabledClasses)} disabled>
         Out Of Stock
       </button>
     );

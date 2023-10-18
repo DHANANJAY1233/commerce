@@ -25,7 +25,8 @@ export function ProductDescription({ product }: { product: Product }) {
         />
       ) : null}
 
-      <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
+      {/* TODO: availableForSale should be product dependant*/}
+      <AddToCart variants={product.variants} availableForSale={false} />
     </>
   );
 }
