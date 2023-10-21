@@ -14,10 +14,6 @@ export const FooterMenuMock = [
   {
     title: 'Privacy Policy',
     path: 'privacy-policy'
-  },
-  {
-    title: 'FAQ',
-    path: 'faq'
   }
 ];
 
