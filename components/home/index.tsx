@@ -1,3 +1,5 @@
+import Footer from 'components/layout/footer';
+import { Suspense } from 'react';
 import AboutUs from './about-us';
 import HeroBanner from './hero-banner';
 import OurServices from './our-services';
@@ -8,6 +10,9 @@ const Home = () => {
       <HeroBanner />
       <OurServices />
       <AboutUs />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </>
   );
 };
