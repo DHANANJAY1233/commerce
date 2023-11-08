@@ -1,6 +1,6 @@
 import Navbar from 'components/layout/navbar';
 import { ensureStartsWith } from 'lib/utils';
-import { Inter } from 'next/font/google';
+import { Slabo_13px } from 'next/font/google';
 import { ReactNode, Suspense } from 'react';
 import './globals.css';
 
@@ -31,7 +31,8 @@ export const metadata = {
     })
 };
 
-const inter = Inter({
+const inter = Slabo_13px({
+  weight: '400',
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter'
