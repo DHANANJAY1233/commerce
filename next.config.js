@@ -9,7 +9,12 @@ module.exports = {
   },
   images: {
     //TODO: FIX THIS HACK, this just allows mock images
-    domains: ['cdn.shopify.com', 'demo.vercel.store', 'upload.wikimedia.org'],
+    domains: [
+      'cdn.shopify.com',
+      'demo.vercel.store',
+      'upload.wikimedia.org',
+      'images.unsplash.com'
+    ],
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
