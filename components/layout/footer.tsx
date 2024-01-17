@@ -1,9 +1,5 @@
-import Link from 'next/link';
-
 import LogoSquare from 'components/logo-square';
-import { Suspense } from 'react';
-import FooterMenu from './footer-menu';
-import { FooterMenuMock } from './mock';
+import Link from 'next/link';
 
 const { COMPANY_NAME, SITE_NAME } = process.env;
 
@@ -15,39 +11,23 @@ export default async function Footer() {
   const copyrightName = COMPANY_NAME || SITE_NAME || '';
 
   return (
-    <footer className="bg-[rgb(255,99,87)] text-sm text-black">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-12 text-sm md:flex-row md:gap-12 md:px-4 min-[1320px]:px-0">
-        <div>
-          <Link className="flex items-center gap-2 text-black md:pt-1" href="/">
-            <LogoSquare size="sm" />
-            <span className="uppercase">{SITE_NAME}</span>
-          </Link>
-        </div>
-        <Suspense
-          fallback={
-            <div className="flex h-[188px] w-[200px] flex-col gap-2">
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-            </div>
-          }
-        >
-          <FooterMenu menu={FooterMenuMock} />
-        </Suspense>
-      </div>
-      <div className="border-t border-neutral-700 py-6 text-sm">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-1 px-4 md:flex-row md:gap-0 md:px-4 min-[1320px]:px-0">
-          <p>
-            &copy; {copyrightDate} {copyrightName}
-            {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} All rights reserved.
-          </p>
-          <hr className="mx-4 hidden h-4 w-[1px] border-l border-slate-700 md:inline-block" />
-          <p>Designed in Montreal</p>
-          <p className="md:ml-auto">
-            <a href="https://vercel.com">Crafted by ▲ Unikarte</a>
+    <footer className="bg-[rgb(255,209,97)] text-sm text-black">
+      <div className="container relative z-10 mx-auto pb-8 pt-8 lg:pb-12 lg:pt-12">
+        <div className="flex flex-col justify-center gap-12 text-center">
+          <div className="flex flex-col items-center gap-6">
+            <Link
+              href="/"
+              className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
+            >
+              <LogoSquare />
+              <h2 className="ml-2 flex-none font-header text-[32px] font-light text-black lg:block">
+                {SITE_NAME}
+              </h2>
+            </Link>
+          </div>
+          <div className="flex flex-col justify-center gap-12 lg:gap-14" />
+          <p className="body-normal whitespace-nowrap !text-center lg:text-right">
+            Crafted by ▲ Unikart
           </p>
         </div>
       </div>

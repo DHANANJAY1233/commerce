@@ -1,5 +1,4 @@
 import Footer from 'components/layout/footer';
-import { Suspense } from 'react';
 import AboutUs from './about-us';
 import Carousel from './carousel';
 import Form from './form';
@@ -14,9 +13,7 @@ const Home = () => {
       <AboutUs />
       <Form />
       <Carousel />
-      <Suspense>
-        <Footer />
-      </Suspense>
+      <Footer />
     </>
   );
 };
