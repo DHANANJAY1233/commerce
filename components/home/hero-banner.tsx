@@ -3,34 +3,28 @@ import Image from 'next/image';
 const HeroBanner = () => {
   return (
     <section className="relative">
-      <div className="relative flex flex-shrink items-center break-words">
+      <div className="relative mt-[-80px] flex min-h-screen flex-shrink items-end break-words pt-[80px]">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 z-10 bg-[rgb(255,99,87)] opacity-70"></div>
+          <div className="absolute inset-0 z-10 bg-[linear-gradient(rgb(82,191,141),rgb(255,209,97))] opacity-[0.78]"></div>
           <Image
             width={2000}
             height={2000}
             className="absolute h-full w-full object-cover object-center"
             alt="background"
-            src="https://images.unsplash.com/photo-1554672409-87b40d480f70?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="https://images.unsplash.com/photo-1543168256-418811576931?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           />
         </div>
-        <div className="container relative z-10 mx-auto px-[1.5rem] pb-20 pt-20 lg:pb-48 lg:pt-48">
+        <div className="container relative z-10 mx-auto px-[1.5rem] pb-8 pt-8 lg:pb-32 lg:pt-32">
           <div className="ml-0 mr-auto max-w-3xl translate-y-0  text-left opacity-100 transition-all duration-500 ease-in-out">
-            <h2 className="break-word heading-xlarge mb-6 text-left text-[36px] font-normal text-[rgb(17,24,39)] lg:text-[46px] xl:text-[72px]">
-              Get Fresh Groceries Delivered
+            <h2 className="break-word heading-xlarge mb-[24px] text-left font-work text-[30px] font-medium leading-[42px] text-[rgb(17,24,39)] lg:text-[35px]">
+              Your Grocery, Your Way.
             </h2>
             <p className="body-large text-[16px] font-normal text-[rgb(17,24,39)] lg:text-[18px] xl:text-[24px]">
-              Convenient, fast, and reliable grocery delivery service in Montreal, Order today!
+              Discover a world of convenience, choice and customization. Handpick groceries from
+              fresh produce to specialty items from your favourite local marches to supermarkets for
+              all in a single order. Why go outside when you can have everything delivered to your
+              home with just a button press?
             </p>
-            <div className="mt-6 flex flex-col rounded-[8px] border-2 border-solid border-[rgb(215,255,32)] bg-[rgb(215,255,32)] text-[rgb(17,24,39)] shadow-none md:inline-flex md:flex-row md:gap-4">
-              <a
-                className="button xl !my-[0.75rem] mx-[1rem] w-full md:w-max lg:mt-8 "
-                target="_blank"
-                href="https://unikarte.mydurable.com/new-page"
-              >
-                Order Now
-              </a>
-            </div>
           </div>
         </div>
       </div>

@@ -1,31 +1,49 @@
-import Cart from 'components/cart';
-import OpenCart from 'components/cart/open-cart';
+'use client';
+
 import LogoSquare from 'components/logo-square';
-import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { HeaderMenuMock } from '../mock';
 import MobileMenu from './mobile-menu';
-const { SITE_NAME } = process.env;
 
-export default async function Navbar() {
-  //const menu = await getMenu('next-js-frontend-header-menu');
+interface NavbarProps {
+  siteName: string | undefined;
+}
+
+export default function Navbar({ siteName }: NavbarProps) {
   const menu = HeaderMenuMock;
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    // Add the scroll event listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Clean up function
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <nav className="relative flex items-center justify-between bg-[rgba(0,235,205)] p-4 lg:px-6">
-      <div className="block flex-none md:hidden">
-        <MobileMenu menu={menu} />
-      </div>
-      <div className="flex w-full items-center">
-        <div className="flex w-full md:w-1/3">
+    <nav
+      className={`sticky top-0 z-[2000] flex items-center justify-between ${
+        isScrolled ? 'bg-[#52bf8d]' : 'bg-transparent'
+      } p-4 lg:px-6`}
+    >
+      <div className="container relative mx-auto flex w-full items-center justify-center">
+        <div className="flex">
           <Link href="/" className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6">
             <LogoSquare />
-            <div className="ml-2 flex-none text-sm font-medium uppercase text-black md:hidden lg:block">
-              {SITE_NAME}
-            </div>
+            <h2 className="ml-2 flex-none font-header text-[32px] font-light text-black lg:block">
+              {siteName}
+            </h2>
           </Link>
-          {menu.length ? (
+          {/* {menu.length ? (
             <ul className="hidden gap-6 text-sm md:flex md:items-center">
               {menu.map((item: Menu) => (
                 <li key={item.title}>
@@ -38,15 +56,26 @@ export default async function Navbar() {
                 </li>
               ))}
             </ul>
-          ) : null}
+          ) : null} */}
         </div>
         {/* <div className="hidden justify-center md:flex md:w-1/3">
           <Search />
         </div> */}
-        <div className="flex justify-end md:w-2/3">
+        {/* <div className="flex justify-end md:w-2/3">
           <Suspense fallback={<OpenCart />}>
             <Cart />
           </Suspense>
+        </div> */}
+        <div className="absolute right-0">
+          <Link
+            href="/order-now"
+            className="hidden rounded-[8px] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] md:block"
+          >
+            Order Now
+          </Link>
+        </div>
+        <div className="absolute right-0 flex-none md:hidden">
+          <MobileMenu menu={menu} />
         </div>
       </div>
     </nav>
