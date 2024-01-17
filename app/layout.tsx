@@ -32,7 +32,7 @@ export const metadata = {
 };
 
 const inter = Open_Sans({
-  weight: '400',
+  weight: ['300', '400', '700'],
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter'

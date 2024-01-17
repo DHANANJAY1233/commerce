@@ -32,7 +32,7 @@ export default function Navbar({ siteName }: NavbarProps) {
   return (
     <nav
       className={`sticky top-0 z-[2000] flex items-center justify-between ${
-        isScrolled ? 'bg-[#52bf8d]' : 'bg-transparent'
+        isScrolled ? 'bg-[#52bf8d] shadow-md' : 'bg-transparent'
       } p-4 lg:px-6`}
     >
       <div className="container relative mx-auto flex w-full items-center justify-center">
@@ -43,33 +43,11 @@ export default function Navbar({ siteName }: NavbarProps) {
               {siteName}
             </h2>
           </Link>
-          {/* {menu.length ? (
-            <ul className="hidden gap-6 text-sm md:flex md:items-center">
-              {menu.map((item: Menu) => (
-                <li key={item.title}>
-                  <Link
-                    href={item.path}
-                    className="text-slate-600 underline-offset-4 hover:text-black hover:underline"
-                  >
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : null} */}
         </div>
-        {/* <div className="hidden justify-center md:flex md:w-1/3">
-          <Search />
-        </div> */}
-        {/* <div className="flex justify-end md:w-2/3">
-          <Suspense fallback={<OpenCart />}>
-            <Cart />
-          </Suspense>
-        </div> */}
         <div className="absolute right-0">
           <Link
             href="/order-now"
-            className="hidden rounded-[8px] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] md:block"
+            className="hidden rounded-[8px] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] text-black md:block"
           >
             Order Now
           </Link>

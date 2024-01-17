@@ -16,7 +16,7 @@ const HeroBanner = () => {
         </div>
         <div className="container relative z-10 mx-auto px-[1.5rem] pb-8 pt-8 lg:pb-32 lg:pt-32">
           <div className="ml-0 mr-auto max-w-3xl translate-y-0  text-left opacity-100 transition-all duration-500 ease-in-out">
-            <h2 className="break-word heading-xlarge mb-[24px] text-left font-work text-[30px] font-medium leading-[42px] text-[rgb(17,24,39)] lg:text-[35px]">
+            <h2 className="break-word heading-xlarge mb-6 text-left font-work text-[36px] font-normal text-[rgb(17,24,39)] lg:text-[46px]">
               Your Grocery, Your Way.
             </h2>
             <p className="body-large text-[16px] font-normal text-[rgb(17,24,39)] lg:text-[18px] xl:text-[24px]">

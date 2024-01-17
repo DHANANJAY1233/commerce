@@ -1,8 +1,9 @@
 import Footer from 'components/layout/footer';
 import { Suspense } from 'react';
 import AboutUs from './about-us';
+import Carousel from './carousel';
+import Form from './form';
 import HeroBanner from './hero-banner';
-import Location from './location';
 import OurServices from './our-services';
 
 const Home = () => {
@@ -11,7 +12,8 @@ const Home = () => {
       <HeroBanner />
       <OurServices />
       <AboutUs />
-      <Location />
+      <Form />
+      <Carousel />
       <Suspense>
         <Footer />
       </Suspense>
