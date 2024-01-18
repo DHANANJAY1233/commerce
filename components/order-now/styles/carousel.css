@@ -1,0 +1,44 @@
+.swiper-wrapper {
+  overflow: visible;
+  padding-bottom: 40px;
+  width: 75%;
+}
+
+.swiper-pagination {
+  bottom: 0px !important;
+  text-align: center;
+}
+
+.swiper-pagination-bullet {
+  background: black;
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  border: 2px solid white;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: white;
+}
+
+.swiper-slide-active .overlay {
+  backdrop-filter: none;
+  background: none;
+}
+
+@media screen and (max-width: 786px) {
+  .swiper-pagination {
+    padding-left: 2rem;
+  }
+
+  .swiper-button-prev {
+    left: 0px;
+  }
+
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    font-size: 15px;
+  }
+}

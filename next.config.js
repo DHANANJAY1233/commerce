@@ -14,7 +14,8 @@ module.exports = {
       'cdn.shopify.com',
       'demo.vercel.store',
       'upload.wikimedia.org',
-      'images.unsplash.com'
+      'images.unsplash.com',
+      'plus.unsplash.com'
     ],
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
