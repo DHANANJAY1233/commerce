@@ -61,7 +61,7 @@ const StoreCarousel = () => {
         initialSlide={2}
         spaceBetween="30px"
       >
-        {[...storeGalleryList].map((galleryItem) => {
+        {storeGalleryList.map((galleryItem) => {
           return (
             <SwiperSlide>
               <GalleryCard imageSrc={galleryItem.imageSrc} imageAlt={galleryItem.imageAlt} />

@@ -1,4 +1,39 @@
-import Image from 'next/image';
+import StoreCard from './store-card';
+
+const storeList = [
+  {
+    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/2/2a/IGA_logo.svg',
+    imageAlt: 'IGA',
+    storeUrl: '/search?store=iga'
+  },
+  {
+    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg',
+    imageAlt: 'Walmart',
+    storeUrl: '/search?store=walmart'
+  },
+  {
+    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/f/f6/Metro_Inc._logo.svg',
+    imageAlt: 'Metro',
+    storeUrl: '/search?store=metro'
+  },
+  {
+    imageSrc: 'https://upload.wikimedia.org/wikipedia/en/6/60/Superc_grocery_logo.png',
+    imageAlt: 'Super-c',
+    storeUrl: '/search?store=superc'
+  },
+  {
+    imageSrc:
+      'https://upload.wikimedia.org/wikipedia/commons/5/59/Costco_Wholesale_logo_2010-10-26.svg',
+    imageAlt: 'Costco',
+    storeUrl: '/search?store=costco'
+  },
+  {
+    imageSrc:
+      'https://upload.wikimedia.org/wikipedia/commons/2/29/Maxi_%28Canadian_supermarket%29_logo.svg',
+    imageAlt: 'Maxi',
+    storeUrl: '/search?store=maxi'
+  }
+];
 
 const StoreList = () => {
   return (
@@ -9,54 +44,9 @@ const StoreList = () => {
         </h1>
         <div>
           <div className="mb-6 grid grid-cols-1 gap-6 md:mb-10 md:gap-10 lg:grid-cols-3">
-            <div className="aspect-w-16 aspect-h-9 relative flex cursor-pointer items-center justify-center overflow-hidden transition-opacity hover:opacity-70">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/2/2a/IGA_logo.svg"
-                alt="IGA"
-                width={500}
-                height={500}
-              />
-            </div>
-            <div className="aspect-w-16 aspect-h-9 relative flex cursor-pointer items-center justify-center overflow-hidden transition-opacity hover:opacity-70">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg"
-                alt="Walmart"
-                width={500}
-                height={500}
-              />
-            </div>
-            <div className="aspect-w-16 aspect-h-9 relative flex cursor-pointer items-center justify-center overflow-hidden transition-opacity hover:opacity-70">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/f/f6/Metro_Inc._logo.svg"
-                alt="Metro"
-                width={500}
-                height={500}
-              />
-            </div>
-            <div className="aspect-w-16 aspect-h-9 relative flex cursor-pointer items-center justify-center overflow-hidden transition-opacity hover:opacity-70">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/en/6/60/Superc_grocery_logo.png"
-                alt="Super-c"
-                width={500}
-                height={500}
-              />
-            </div>
-            <div className="aspect-w-16 aspect-h-9 relative flex cursor-pointer items-center justify-center overflow-hidden transition-opacity hover:opacity-70">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/5/59/Costco_Wholesale_logo_2010-10-26.svg"
-                alt="Costco"
-                width={500}
-                height={500}
-              />
-            </div>
-            <div className="aspect-w-16 aspect-h-9 relative flex cursor-pointer items-center justify-center overflow-hidden transition-opacity hover:opacity-70">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/2/29/Maxi_%28Canadian_supermarket%29_logo.svg"
-                alt="Maxi"
-                width={500}
-                height={500}
-              />
-            </div>
+            {storeList.map((store) => {
+              return <StoreCard {...store} />;
+            })}
           </div>
         </div>
       </div>
