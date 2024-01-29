@@ -63,6 +63,9 @@ export const placeDestinationMarker = (
     destinationMarker.setMap(null);
   }
 
+  // Clear previous directions
+  directionsRenderer.setDirections({ routes: [] });
+
   // Place a new marker at the clicked location
   destinationMarker = new google.maps.Marker({
     position: location,
@@ -102,7 +105,7 @@ export const placeChangeListener = (
 
 export const calculateRoute = (
   autocomplete: google.maps.places.Autocomplete | undefined,
-  optionData: string
+  optionData: google.maps.TravelMode
 ) => {
   if (autocomplete) {
     var destination = autocomplete.getPlace()?.formatted_address || '';

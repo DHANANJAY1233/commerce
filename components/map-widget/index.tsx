@@ -1,6 +1,6 @@
 'use client';
 
-import { Autocomplete, GoogleMap, TrafficLayer, useLoadScript } from '@react-google-maps/api';
+import { Autocomplete, GoogleMap, TrafficLayer, useJsApiLoader } from '@react-google-maps/api';
 import { useEffect, useState } from 'react';
 import {
   calculateRoute,
@@ -10,14 +10,15 @@ import {
 } from './map-utils';
 import './styles/style.css';
 
-const MapWidget = () => {
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: '<YOUR KEY HERE>',
+const MapWidget = ({ apikey }: { apikey: string }) => {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: apikey,
     libraries: ['places']
   });
 
   const [isTrafficLayerVisible, setIsTrafficLayerVisible] = useState(false);
   const [optionData, setOptionData] = useState('DRIVING');
+  const [navigationData, setNavigationData] = useState();
 
   const [mapRef, setMapRef] = useState<google.maps.Map>();
   const [autocompleteRef, setAutoCompleteRef] = useState<google.maps.places.Autocomplete>();
@@ -61,17 +62,17 @@ const MapWidget = () => {
             </div>
             <select
               value={optionData}
-              onChange={(e) => setOptionData(e.target.value)}
+              onChange={(e) => setOptionData(e.target.value as google.maps.TravelMode)}
               className="appearance-none rounded-md bg-[rgb(255,209,97)] bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAQCAYAAAAMJL+VAAAABGdBTUEAALGPC/xhBQAAAQtJREFUOBG1lEEOgjAQRalbGj2OG9caOACn4ALGtfEuHACiazceR1PWOH/CNA3aMiTaBDpt/7zPdBKy7M/DCL9pGkvxxVp7KsvyJftL5rZt1865M+Ucq6pyyF3hNcI7Cuu+728QYn/JQA5yKaempxuZmQngOwEaYx55nu+1lQh8GIatMGi+01NwBcEmhxBqK4nAPZJ78K0KKFAJmR3oPp8+Iwgob0Oa6+TLoeCvRx+mTUYf/FVBGTPRwDkfLxnaSrRwcH0FWhNOmrkWYbE2XEicqgSa1J0LQ+aPCuQgZiLnwewbGuz5MGoAhcIkCQcjaTBjMgtXGURMVHC1wcQEy0J+Zlj8bKAnY1/UzDe2dbAVqfXn6wAAAABJRU5ErkJggg==')] bg-[length:0.7rem] bg-[right_0.7rem_center] bg-no-repeat px-[10px]"
               id="travel-mode-select"
             >
               <option value="DRIVING">Driving</option>
               <option value="WALKING">Walking</option>
-              <option value="BICYCLING">Bicycling</option>
-              <option value="TRANSIT">Public Transportation</option>
+              <option value={'BICYCLING'}>Bicycling</option>
+              <option value={'TRANSIT'}>Public Transportation</option>
             </select>
             <button
-              onClick={() => calculateRoute(autocompleteRef, optionData)}
+              onClick={() => calculateRoute(autocompleteRef, optionData as google.maps.TravelMode)}
               className="rounded-md bg-[rgb(255,209,97)] px-[10px]"
             >
               Get Directions
