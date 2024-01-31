@@ -9,6 +9,7 @@ import {
   placeDestinationMarker
 } from './map-utils';
 import './styles/style.css';
+import Waypoints from './waypoint';
 
 const MapWidget = ({ apikey }: { apikey: string }) => {
   const { isLoaded } = useJsApiLoader({
@@ -18,18 +19,26 @@ const MapWidget = ({ apikey }: { apikey: string }) => {
 
   const [isTrafficLayerVisible, setIsTrafficLayerVisible] = useState(false);
   const [optionData, setOptionData] = useState('DRIVING');
-  const [navigationData, setNavigationData] = useState();
 
   const [mapRef, setMapRef] = useState<google.maps.Map>();
-  const [autocompleteRef, setAutoCompleteRef] = useState<google.maps.places.Autocomplete>();
+  const [originAutoCompleteRef, setOriginAutoCompleteRef] =
+    useState<google.maps.places.Autocomplete>();
+  const [destinationAutoCompleteRef, setDestinationAutoCompleteRef] =
+    useState<google.maps.places.Autocomplete>();
+
+  const [waypoints, setWaypoints] = useState<{ id: number }[]>([]);
+
+  const addWaypoint = () => {
+    setWaypoints((prev) => [...prev, { id: Date.now() }]);
+  };
+
+  const removeWaypoint = (id: number) => {
+    setWaypoints((prev) => prev.filter((waypoint) => waypoint.id !== id));
+  };
 
   const onLoad = (map: google.maps.Map) => {
     setMapRef(map);
     initMapCenter(map);
-  };
-
-  const onAutoCompleteLoad = (autocomplete: google.maps.places.Autocomplete) => {
-    setAutoCompleteRef(autocomplete);
   };
 
   //don't know if this is required or not
@@ -42,7 +51,7 @@ const MapWidget = ({ apikey }: { apikey: string }) => {
   }, [mapRef]);
 
   return (
-    <div className="map h-[400px]">
+    <div className="map">
       {!isLoaded ? (
         <h1>Loading...</h1>
       ) : (
@@ -50,12 +59,28 @@ const MapWidget = ({ apikey }: { apikey: string }) => {
           <div className="mb-4 flex flex-col gap-4 lg:flex-row">
             <div className="flex-1">
               <Autocomplete
-                onLoad={onAutoCompleteLoad}
-                onPlaceChanged={() => placeChangeListener(autocompleteRef, mapRef)}
+                onLoad={(autocomplete) => setOriginAutoCompleteRef(autocomplete)}
+                onPlaceChanged={() => placeChangeListener(originAutoCompleteRef, mapRef, 'origin')}
               >
                 <input
+                  placeholder="Enter Origin Location"
                   type="text"
-                  id="autocomplete-input"
+                  id="origin-input"
+                  className="block w-full appearance-none rounded-[8px] bg-[rgba(0,0,0,0.26)] px-[8px] py-[12px] !placeholder-current !shadow-none !ring-transparent"
+                />
+              </Autocomplete>
+            </div>
+            <div className="flex-1">
+              <Autocomplete
+                onLoad={(autocomplete) => setDestinationAutoCompleteRef(autocomplete)}
+                onPlaceChanged={() =>
+                  placeChangeListener(destinationAutoCompleteRef, mapRef, 'destination')
+                }
+              >
+                <input
+                  placeholder="Enter Destination Location"
+                  type="text"
+                  id="destination-input"
                   className="block w-full appearance-none rounded-[8px] bg-[rgba(0,0,0,0.26)] px-[8px] py-[12px] !placeholder-current !shadow-none !ring-transparent"
                 />
               </Autocomplete>
@@ -71,8 +96,28 @@ const MapWidget = ({ apikey }: { apikey: string }) => {
               <option value={'BICYCLING'}>Bicycling</option>
               <option value={'TRANSIT'}>Public Transportation</option>
             </select>
+          </div>
+
+          {waypoints.map((waypoint) => {
+            return (
+              <div key={waypoint.id} className="mb-4">
+                <Waypoints id={waypoint.id} mapRef={mapRef} removeHandler={removeWaypoint} />
+              </div>
+            );
+          })}
+
+          <div className="mb-4 flex flex-col gap-4 lg:flex-row">
+            <button onClick={addWaypoint} className="rounded-md bg-[rgb(255,209,97)] px-[10px]">
+              Add Waypoint
+            </button>
             <button
-              onClick={() => calculateRoute(autocompleteRef, optionData as google.maps.TravelMode)}
+              onClick={() =>
+                calculateRoute(
+                  originAutoCompleteRef,
+                  destinationAutoCompleteRef,
+                  optionData as google.maps.TravelMode
+                )
+              }
               className="rounded-md bg-[rgb(255,209,97)] px-[10px]"
             >
               Get Directions
