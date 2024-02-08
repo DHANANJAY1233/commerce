@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
@@ -11,34 +12,22 @@ import './styles/carousel.css';
 
 const storeGalleryList = [
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1553688737-e4fbcdad80c0?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    imageAlt: 'local-store-1'
+    imageSrc: '/marche-euro-entrance.jpeg',
+    imageAlt: 'marche-euro-victoria',
+    pos: 'center',
+    url: '/search?store=victoria'
   },
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1526267814039-b53c93dc3bc4?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    imageAlt: 'local-store-1'
+    imageSrc: '/marche-jang-teu.png',
+    imageAlt: 'marche-jang-teu',
+    pos: 'center',
+    url: '/search?store=jangteu'
   },
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    imageAlt: 'local-store-1'
-  },
-  {
-    imageSrc:
-      'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    imageAlt: 'local-store-1'
-  },
-  {
-    imageSrc:
-      'https://images.unsplash.com/photo-1585781207801-980f0274f317?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    imageAlt: 'local-store-1'
-  },
-  {
-    imageSrc:
-      'https://images.unsplash.com/photo-1561385945-c99789cd12d1?q=80&w=2795&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    imageAlt: 'local-store-1'
+    imageSrc: '/tharsini-entrance.jpeg',
+    imageAlt: 'marche-tharsini',
+    pos: 'right',
+    url: '/search?store=tharsini'
   }
 ];
 
@@ -56,15 +45,21 @@ const StoreCarousel = () => {
         className="mySwiper"
         pagination
         loop={true}
-        slidesPerView={4}
+        slidesPerView={3}
         centeredSlides
         initialSlide={2}
         spaceBetween="30px"
       >
-        {storeGalleryList.map((galleryItem) => {
+        {[...storeGalleryList, ...storeGalleryList].map((galleryItem) => {
           return (
             <SwiperSlide>
-              <GalleryCard imageSrc={galleryItem.imageSrc} imageAlt={galleryItem.imageAlt} />
+              <Link href={galleryItem.url}>
+                <GalleryCard
+                  imageSrc={galleryItem.imageSrc}
+                  imageAlt={galleryItem.imageAlt}
+                  pos={galleryItem.pos}
+                />
+              </Link>
             </SwiperSlide>
           );
         })}
