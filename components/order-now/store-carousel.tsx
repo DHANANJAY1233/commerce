@@ -23,7 +23,7 @@ const StoreCarousel = () => {
       let shops:Store[] = []
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        shops.push(doc.data() as Store)
+        shops.push({...doc.data(), id: doc.id} as Store)
       });
       setStoreGalleryList(shops)
     })
@@ -49,7 +49,7 @@ const StoreCarousel = () => {
         {storeGalleryList && storeGalleryList.length > 0 && [...storeGalleryList, ...storeGalleryList].map((galleryItem, id) => {
           return (
             <SwiperSlide key={`${galleryItem.name}_${id}`}>
-              <Link href={galleryItem?.store_ui?.store_url || ''}>
+              <Link href={galleryItem?.store_ui?.store_url ? galleryItem?.store_ui?.store_url+`&store_id=${galleryItem.id}` : ''}>
                 <GalleryCard
                   imageSrc={galleryItem?.store_ui?.image_src || ''}
                   imageAlt={galleryItem.name}

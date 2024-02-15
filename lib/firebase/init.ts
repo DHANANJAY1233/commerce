@@ -6,13 +6,13 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDWV-a7pRQfdNx95Htg7E2JHBLo30Zvn3w",
-  authDomain: "unikarte-39e72.firebaseapp.com",
-  projectId: "unikarte-39e72",
-  storageBucket: "unikarte-39e72.appspot.com",
-  messagingSenderId: "329640918317",
-  appId: "1:329640918317:web:b56061a2a30bdf883927a4"
-}
+  apiKey: "AIzaSyCSXfImRm_ROuZmaGY-M_zdohAvFeX3D4c",
+  authDomain: "ecommerce-cecd1.firebaseapp.com",
+  projectId: "ecommerce-cecd1",
+  storageBucket: "ecommerce-cecd1.appspot.com",
+  messagingSenderId: "793569379195",
+  appId: "1:793569379195:web:3afcfc862ba75501ba33de"
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

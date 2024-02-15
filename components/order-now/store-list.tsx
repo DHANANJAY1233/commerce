@@ -6,41 +6,6 @@ import app from 'lib/firebase/init';
 import { useEffect, useState } from 'react';
 import StoreCard from './store-card';
 
-const storeList = [
-  {
-    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/2/2a/IGA_logo.svg',
-    imageAlt: 'IGA',
-    storeUrl: '/search?store=iga'
-  },
-  {
-    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg',
-    imageAlt: 'Walmart',
-    storeUrl: '/search?store=walmart'
-  },
-  {
-    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/f/f6/Metro_Inc._logo.svg',
-    imageAlt: 'Metro',
-    storeUrl: '/search?store=metro'
-  },
-  {
-    imageSrc: 'https://upload.wikimedia.org/wikipedia/en/6/60/Superc_grocery_logo.png',
-    imageAlt: 'Super-c',
-    storeUrl: '/search?store=superc'
-  },
-  {
-    imageSrc:
-      'https://upload.wikimedia.org/wikipedia/commons/5/59/Costco_Wholesale_logo_2010-10-26.svg',
-    imageAlt: 'Costco',
-    storeUrl: '/search?store=costco'
-  },
-  {
-    imageSrc:
-      'https://upload.wikimedia.org/wikipedia/commons/2/29/Maxi_%28Canadian_supermarket%29_logo.svg',
-    imageAlt: 'Maxi',
-    storeUrl: '/search?store=maxi'
-  }
-];
-
 const StoreList = () => {
   const [storeGalleryList, setStoreGalleryList] = useState<Store[]>([])
   useEffect(() => {
@@ -50,7 +15,7 @@ const StoreList = () => {
       let shops:Store[] = []
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        shops.push(doc.data() as Store)
+        shops.push({...doc.data(), id:doc.id} as Store)
       });
       setStoreGalleryList(shops)
     })
@@ -66,7 +31,7 @@ const StoreList = () => {
             {storeGalleryList.map((store, id) => {
               return <StoreCard key={`${store.name}_${id}`} imageSrc={store?.store_ui?.image_src || ''}
               imageAlt={store.name || ''}
-              storeUrl={store?.store_ui?.store_url || ''} />
+              storeUrl={store?.store_ui?.store_url ? store?.store_ui?.store_url+`&store_id=${store.id}` : ''} />
             })}
           </div>
         </div>
