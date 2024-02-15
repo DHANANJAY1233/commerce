@@ -1,6 +1,10 @@
 'use client';
 
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import { Store } from 'lib/data-types';
+import app from 'lib/firebase/init';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
@@ -10,28 +14,20 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import GalleryCard from './gallery-card';
 import './styles/carousel.css';
 
-const storeGalleryList = [
-  {
-    imageSrc: '/marche-euro-entrance.jpeg',
-    imageAlt: 'marche-euro-victoria',
-    pos: 'center',
-    url: '/search?store=victoria'
-  },
-  {
-    imageSrc: '/marche-jang-teu.png',
-    imageAlt: 'marche-jang-teu',
-    pos: 'center',
-    url: '/search?store=jangteu'
-  },
-  {
-    imageSrc: '/tharsini-entrance.jpeg',
-    imageAlt: 'marche-tharsini',
-    pos: 'right',
-    url: '/search?store=tharsini'
-  }
-];
-
 const StoreCarousel = () => {
+  const [storeGalleryList, setStoreGalleryList] = useState<Store[]>([])
+  useEffect(() => {
+    const db = getFirestore(app);
+    const q = query(collection(db, "shops"), where("is_commercial", "==", false))
+    getDocs(q).then(querySnapshot => {
+      let shops:Store[] = []
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        shops.push(doc.data() as Store)
+      });
+      setStoreGalleryList(shops)
+    })
+  },[])
   return (
     <div className="mt-[-80px] bg-[linear-gradient(rgb(82,191,141),rgb(255,209,97))] text-black">
       <div className="container relative z-10 mx-auto px-[1.5rem] pt-16 lg:pt-32">
@@ -50,14 +46,14 @@ const StoreCarousel = () => {
         initialSlide={2}
         spaceBetween="30px"
       >
-        {[...storeGalleryList, ...storeGalleryList].map((galleryItem) => {
+        {storeGalleryList && storeGalleryList.length > 0 && [...storeGalleryList, ...storeGalleryList].map((galleryItem, id) => {
           return (
-            <SwiperSlide>
-              <Link href={galleryItem.url}>
+            <SwiperSlide key={`${galleryItem.name}_${id}`}>
+              <Link href={galleryItem?.store_ui?.store_url || ''}>
                 <GalleryCard
-                  imageSrc={galleryItem.imageSrc}
-                  imageAlt={galleryItem.imageAlt}
-                  pos={galleryItem.pos}
+                  imageSrc={galleryItem?.store_ui?.image_src || ''}
+                  imageAlt={galleryItem.name}
+                  pos={galleryItem?.store_ui?.pos || 'center'}
                 />
               </Link>
             </SwiperSlide>

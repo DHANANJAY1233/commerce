@@ -1,3 +1,9 @@
+'use client';
+
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import { Store } from 'lib/data-types';
+import app from 'lib/firebase/init';
+import { useEffect, useState } from 'react';
 import StoreCard from './store-card';
 
 const storeList = [
@@ -36,6 +42,19 @@ const storeList = [
 ];
 
 const StoreList = () => {
+  const [storeGalleryList, setStoreGalleryList] = useState<Store[]>([])
+  useEffect(() => {
+    const db = getFirestore(app);
+    const q = query(collection(db, "shops"), where("is_commercial", "==", true))
+    getDocs(q).then(querySnapshot => {
+      let shops:Store[] = []
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        shops.push(doc.data() as Store)
+      });
+      setStoreGalleryList(shops)
+    })
+  },[])
   return (
     <div className="bg-[rgb(255,209,97)] text-black">
       <div className="container relative z-10 mx-auto px-[1.5rem] pb-16 pt-16 lg:pb-32 lg:pt-32">
@@ -44,8 +63,10 @@ const StoreList = () => {
         </h1>
         <div>
           <div className="mb-6 grid grid-cols-1 gap-6 md:mb-10 md:gap-10 lg:grid-cols-3">
-            {storeList.map((store) => {
-              return <StoreCard {...store} />;
+            {storeGalleryList.map((store, id) => {
+              return <StoreCard key={`${store.name}_${id}`} imageSrc={store?.store_ui?.image_src || ''}
+              imageAlt={store.name || ''}
+              storeUrl={store?.store_ui?.store_url || ''} />
             })}
           </div>
         </div>
