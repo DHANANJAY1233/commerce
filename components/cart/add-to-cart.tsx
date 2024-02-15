@@ -2,41 +2,17 @@
 
 import { PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
+import { Product } from 'lib/data-types/products';
+import { useContext } from 'react';
+import { CartContext } from './context';
 
-function SubmitButton() {
-  // const { pending } = useFormStatus();
+function SubmitButton({addToCartHandler}: {addToCartHandler: Function}) {
   const buttonClasses =
     'relative flex w-full items-center justify-center rounded-full bg-[rgb(82,191,141)] p-4 tracking-wide text-white';
-  // const disabledClasses = 'cursor-not-allowed opacity-60 hover:opacity-60';
-
-  // if (!availableForSale) {
-  //   return (
-  //     <button aria-disabled className={clsx(buttonClasses, disabledClasses)} disabled>
-  //       Out Of Stock
-  //     </button>
-  //   );
-  // }
-
-  // if (!selectedVariantId) {
-  //   return (
-  //     <button
-  //       aria-label="Please select an option"
-  //       aria-disabled
-  //       className={clsx(buttonClasses, disabledClasses)}
-  //     >
-  //       <div className="absolute left-0 ml-4">
-  //         <PlusIcon className="h-5" />
-  //       </div>
-  //       Add To Cart
-  //     </button>
-  //   );
-  // }
 
   return (
     <button
-      // onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-      //   if (pending) e.preventDefault();
-      // }}
+      onClick={() => addToCartHandler()}
       aria-label="Add to cart"
       // aria-disabled={pending}
       className={clsx(buttonClasses, {
@@ -51,24 +27,38 @@ function SubmitButton() {
   );
 }
 
-export function AddToCart() {
-  // const [message, formAction] = useFormState(addItem, null);
-  // const searchParams = useSearchParams();
-  // const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
-  // const variant = variants.find((variant: ProductVariant) =>
-  //   variant.selectedOptions.every(
-  //     (option) => option.value === searchParams.get(option.name.toLowerCase())
-  //   )
-  // );
-  // const selectedVariantId = variant?.id || defaultVariantId;
-  // const actionWithVariant = formAction.bind(null, selectedVariantId);
+export function AddToCart({product}:{product: Product}) {
+
+  const {state, dispatch} = useContext(CartContext)
+
+  const addToCart = (item:Product) => {
+    // Try to retrieve the cart from localStorage and parse it as JSON
+    const cartStorage = localStorage.getItem('cart')
+    let cart:Product[] = []
+    if(cartStorage) {
+      cart = JSON.parse(cartStorage) || [];
+    }
+
+    // Check if the item already exists in the cart
+    const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
+
+    if (existingItemIndex >= 0) {
+        if(cart[existingItemIndex].count >= item.count) {
+          window.alert("No more units available")
+          return
+        }
+        // If the item exists, update its quantity
+        cart[existingItemIndex].count += 1;
+    } else {
+        // If the item doesn't exist, add it to the cart with quantity 1
+        const newItem = { ...item, count: 1 };
+        cart.push(newItem);
+    }
+
+    dispatch({type: 'ADD', payload: cart})
+  }
 
   return (
-    // <form action={actionWithVariant}>
-    <SubmitButton />
-    //   <p aria-live="polite" className="sr-only" role="status">
-    //     {message}
-    //   </p>
-    // </form>
+    <SubmitButton addToCartHandler={() => addToCart(product)}  />
   );
 }

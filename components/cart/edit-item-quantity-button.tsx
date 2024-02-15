@@ -2,60 +2,84 @@
 
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { updateItemQuantity } from 'components/cart/actions';
-import LoadingDots from 'components/loading-dots';
-import type { CartItem } from 'lib/shopify/types';
-import {
-  // @ts-ignore
-  experimental_useFormState as useFormState,
-  experimental_useFormStatus as useFormStatus
-} from 'react-dom';
+import { Product } from 'lib/data-types/products';
+import { useContext } from 'react';
+import { CartContext } from './context';
 
-function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
-  const { pending } = useFormStatus();
+function SubmitButton({ type, handler }: { type: 'plus' | 'minus', handler: Function }) {
 
   return (
     <button
-      type="submit"
-      onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-        if (pending) e.preventDefault();
-      }}
+      onClick={() => handler()}
       aria-label={type === 'plus' ? 'Increase item quantity' : 'Reduce item quantity'}
-      aria-disabled={pending}
       className={clsx(
         'ease flex h-full min-w-[36px] max-w-[36px] flex-none items-center justify-center rounded-full px-2 transition-all duration-200 hover:border-neutral-800 hover:opacity-80',
         {
-          'cursor-not-allowed': pending,
           'ml-auto': type === 'minus'
         }
       )}
     >
-      {pending ? (
-        <LoadingDots className="bg-black dark:bg-white" />
-      ) : type === 'plus' ? (
-        <PlusIcon className="h-4 w-4 dark:text-neutral-500" />
+  {type === 'plus' ? (
+        <PlusIcon className="h-4 w-4" />
       ) : (
-        <MinusIcon className="h-4 w-4 dark:text-neutral-500" />
+        <MinusIcon className="h-4 w-4" />
       )}
     </button>
   );
 }
 
-export function EditItemQuantityButton({ item, type }: { item: CartItem; type: 'plus' | 'minus' }) {
-  const [message, formAction] = useFormState(updateItemQuantity, null);
-  const payload = {
-    lineId: item.id,
-    variantId: item.merchandise.id,
-    quantity: type === 'plus' ? item.quantity + 1 : item.quantity - 1
-  };
-  const actionWithVariant = formAction.bind(null, payload);
+export function EditItemQuantityButton({ item, type }: { item: Product; type: 'plus' | 'minus' }) {
+
+  const {state, dispatch} = useContext(CartContext)
+
+  const addToCart = (item:Product) => {
+    // Try to retrieve the cart from localStorage and parse it as JSON
+    const cartStorage = localStorage.getItem('cart')
+    let cart:Product[] = []
+    if(cartStorage) {
+      cart = JSON.parse(cartStorage) || [];
+    }
+
+    // Check if the item already exists in the cart
+    const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
+
+    if (existingItemIndex >= 0) {
+      //TODO: Remove hardcoded
+        if(cart[existingItemIndex].count >= 10) {
+          window.alert("No more units available")
+          return
+        }
+        // If the item exists, update its quantity
+        cart[existingItemIndex].count += 1;
+    } else {
+        // If the item doesn't exist, add it to the cart with quantity 1
+        const newItem = { ...item, count: 1 };
+        cart.push(newItem);
+    }
+
+    dispatch({type: 'ADD', payload: cart})
+   
+  }
+
+  const removeItemByOne = (item:Product) => {
+     // Try to retrieve the cart from localStorage and parse it as JSON
+     const cartStorage = localStorage.getItem('cart')
+     let cart:Product[] = []
+     if(cartStorage) {
+       cart = JSON.parse(cartStorage) || [];
+     }
+ 
+     // Check if the item already exists in the cart
+     const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
+ 
+     if (existingItemIndex >= 0 && cart[existingItemIndex].count > 1) {
+          cart[existingItemIndex].count -= 1;
+     }
+ 
+     dispatch({type: 'REMOVE', payload: cart})
+  }
 
   return (
-    <form action={actionWithVariant}>
-      <SubmitButton type={type} />
-      <p aria-live="polite" className="sr-only" role="status">
-        {message}
-      </p>
-    </form>
+      <SubmitButton handler={() => type === 'minus' ? removeItemByOne(item): addToCart(item)} type={type} />
   );
 }

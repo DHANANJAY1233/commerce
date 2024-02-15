@@ -1,14 +1,15 @@
-import { getCart } from 'lib/shopify';
+'use client';
+
+import { Product } from 'lib/data-types/products';
+import { useContext, useState } from 'react';
+import { CartContext } from './context';
 import CartModal from './modal';
 
-export default async function Cart() {
-  const cartId = null;
+export default function Cart() {
 
-  let cart;
+  const [cart, setCart] = useState<Product[]>([])
+  const {state} = useContext(CartContext)
+  
 
-  if (cartId) {
-    cart = await getCart(cartId);
-  }
-
-  return <CartModal cart={cart} />;
+  return <CartModal cart={state || []} />;
 }

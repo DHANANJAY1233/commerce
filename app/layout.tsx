@@ -1,3 +1,4 @@
+import { CartProvider } from 'components/cart/context';
 import Navbar from 'components/layout/navbar';
 import { ensureStartsWith } from 'lib/utils';
 import { Bree_Serif, Open_Sans, Work_Sans } from 'next/font/google';
@@ -56,10 +57,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${bree.variable} ${work.variable}`}>
       <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white">
+      <CartProvider>
         <Navbar siteName={SITE_NAME} />
         <Suspense>
           <main>{children}</main>
         </Suspense>
+        </CartProvider>
       </body>
     </html>
   );

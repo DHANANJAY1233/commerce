@@ -1,8 +1,10 @@
 'use client';
 
+import Cart from 'components/cart';
+import OpenCart from 'components/cart/open-cart';
 import LogoSquare from 'components/logo-square';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { HeaderMenuMock } from '../mock';
 import MobileMenu from './mobile-menu';
 
@@ -44,13 +46,18 @@ export default function Navbar({ siteName }: NavbarProps) {
             </h2>
           </Link>
         </div>
-        <div className="absolute right-0">
+        <div className="absolute right-0 flex gap-5 z-[1]">
           <Link
             href="/order-now"
             className="hidden rounded-[8px] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] text-black md:block"
           >
             Order Now
           </Link>
+          <div>
+          <Suspense fallback={<OpenCart />}>
+            <Cart />
+          </Suspense>
+        </div>
         </div>
         <div className="absolute right-0 flex-none md:hidden">
           <MobileMenu menu={menu} />
