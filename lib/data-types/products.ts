@@ -7,5 +7,6 @@ export interface Product {
     description_html?: string;
     count: number;
     store_id: string;
+    store_name: string;
   }
   

@@ -26,6 +26,7 @@ const OrderSummary = ({
               name={cartItem.name}
               price={cartItem.price}
               count={cartItem.count}
+              storeName={cartItem.store_name}
             />
           );
         })}

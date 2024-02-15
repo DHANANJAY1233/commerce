@@ -4,12 +4,14 @@ const OrderItem = ({
   imageSrc,
   name,
   price,
-  count
+  count,
+  storeName
 }: {
   imageSrc: string;
   name: string;
   price: number;
   count: number;
+  storeName: string;
 }) => {
   return (
     <div className="my-6 flex w-full gap-[20px]">
@@ -24,6 +26,7 @@ const OrderItem = ({
         <h2 className="font-work text-[20px] font-normal text-[rgb(17,24,39)] lg:text-[24px] xl:text-[28px]">
           {name}
         </h2>
+        <p className='text-[14px] text-[rgb(17,24,39)] lg:text-[16px] xl:text-[18px]'> from {storeName}</p>
         <div className="mt-auto flex justify-between">
           {price && (
             <p className="font-work text-[16px] font-normal text-[rgb(17,24,39)] lg:text-[18px] xl:text-[20px]">

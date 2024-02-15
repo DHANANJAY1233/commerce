@@ -110,6 +110,9 @@ export default function CartModal({ cart }: { cart: Product[] | undefined }) {
                                 <span className="leading-tight">
                                   {item.name}
                                 </span>
+                                <span className="leading-tight text-[12px] mt-2">
+                                  from {item.store_name}
+                                </span>
                               </div>
                             </Link>
                             <div className="flex h-16 flex-col justify-between">
