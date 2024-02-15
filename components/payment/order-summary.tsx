@@ -1,3 +1,4 @@
+import { Product } from 'lib/data-types/products';
 import OrderItem from './order-item';
 import OrderTotal from './order-total';
 
@@ -6,7 +7,7 @@ const OrderSummary = ({
   subtotal,
   deliveryCharge
 }: {
-  cartItems: any[];
+  cartItems: Product[];
   subtotal: number;
   deliveryCharge: number;
 }) => {
@@ -20,8 +21,8 @@ const OrderSummary = ({
         {cartItems.map((cartItem) => {
           return (
             <OrderItem
-              key={cartItem.productId}
-              imageSrc={cartItem.imageSrc}
+              key={cartItem.id}
+              imageSrc={cartItem.image_src}
               name={cartItem.name}
               price={cartItem.price}
               count={cartItem.count}
