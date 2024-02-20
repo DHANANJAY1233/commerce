@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Product } from 'lib/data-types/products';
 import { useContext } from 'react';
 import { CartContext } from './context';
+import { CartActionTypes } from './context/reducers';
 
 function SubmitButton({deleteHandler}:{deleteHandler: Function}) {
 
@@ -34,9 +35,10 @@ export function DeleteItemButton({ item }: { item: Product }) {
     }
 
     // Check if the item already exists in the cart
-    const cartAfterRemovedItem = cart.filter(cartItem => cartItem.id !== item.id);
-
-    dispatch({type: 'DEL', payload:cartAfterRemovedItem})
+    const cartItemToBeRemoved = cart.find(cartItem => cartItem.id === item.id);
+    if(cartItemToBeRemoved) {
+      dispatch({type: CartActionTypes.DELETE, payload:{id: cartItemToBeRemoved.id}})
+    }
   }
 
   return (

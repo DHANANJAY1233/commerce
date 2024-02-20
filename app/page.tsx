@@ -10,17 +10,5 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  // return (
-  //   <>
-  //     {/* <ThreeItemGrid />
-  //     <Suspense>
-  //       <Carousel />
-  //       <Suspense>
-  //         <Footer />
-  //       </Suspense>
-  //     </Suspense> */}
-  //   </>
-  // );
-
   return <Home />;
 }

@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Product } from 'lib/data-types/products';
 import { useContext } from 'react';
 import { CartContext } from './context';
+import { CartActionTypes } from './context/reducers';
 
 function SubmitButton({addToCartHandler}: {addToCartHandler: Function}) {
   const buttonClasses =
@@ -40,22 +41,21 @@ export function AddToCart({product}:{product: Product}) {
     }
 
     // Check if the item already exists in the cart
-    const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
+    const existingItem = cart.find(cartItem => cartItem.id === item.id);
 
-    if (existingItemIndex >= 0) {
-        if(cart[existingItemIndex].count >= item.count) {
+    if (existingItem) {
+        if(existingItem.count >= item.count) {
           window.alert("No more units available")
           return
         }
         // If the item exists, update its quantity
-        cart[existingItemIndex].count += 1;
+        existingItem.count += 1;
+        dispatch({type: CartActionTypes.UPDATE, payload: {id: existingItem.id, count: existingItem.count}})
     } else {
         // If the item doesn't exist, add it to the cart with quantity 1
         const newItem = { ...item, count: 1 };
-        cart.push(newItem);
+        dispatch({type: CartActionTypes.ADD, payload: newItem})
     }
-
-    dispatch({type: 'ADD', payload: cart})
   }
 
   return (

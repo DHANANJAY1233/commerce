@@ -1,13 +1,21 @@
 'use client';
 
-import { Product } from 'lib/data-types/products';
-import { ReactNode, createContext, useEffect, useReducer } from 'react';
-import { cartReducer } from './reducers';
+import { Product } from 'lib/data-types';
+import React, { ReactNode, createContext, useEffect, useReducer } from 'react';
+import { CartAction, CartActionTypes, cartReducer } from './reducers';
 
-export const CartContext = createContext([]);
+interface CartContextType {
+  state: Product[];
+  dispatch: React.Dispatch<CartAction>;
+}
 
-export const CartProvider = ({ children }: {children: ReactNode}) => {
+export const CartContext = createContext<CartContextType>({ state: [], dispatch: () => {} });
 
+interface CartProviderProps {
+  children: ReactNode;
+}
+
+export const CartProvider = ({ children }: CartProviderProps) => {
   const [state, dispatch] = useReducer(cartReducer, []);
 
   useEffect(() => {
@@ -16,10 +24,11 @@ export const CartProvider = ({ children }: {children: ReactNode}) => {
     if(cartStorage) {
       cart = JSON.parse(cartStorage) || [];
     }
-    dispatch({type: 'ADD', payload: cart})
+    dispatch({type: CartActionTypes.SYNC, payload: cart})
   },[])
 
   // Sync state with local storage
+
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(state));
   }, [state]);

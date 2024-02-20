@@ -16,11 +16,20 @@ type MerchandiseSearchParams = {
   [key: string]: string;
 };
 
-export default function CartModal({ cart }: { cart: Product[] | undefined }) {
+export default function CartModal({ cart = [] }: { cart: Product[] | undefined }) {
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(cart?.length);
+  const totalQuantityRef = useRef(0);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
+
+  useEffect(() => {
+    let count = 0
+    cart?.forEach(item => {
+      count += item.count
+    })
+    totalQuantityRef.current = count
+  }, [])
 
   useEffect(() => {
     // Open cart modal when quantity changes.
@@ -32,8 +41,19 @@ export default function CartModal({ cart }: { cart: Product[] | undefined }) {
 
       // Always update the quantity reference
       quantityRef.current = cart?.length;
+    } else {
+      let cartCount = 0
+      cart?.forEach(item => {
+        cartCount += item.count
+      })
+      if(totalQuantityRef.current !== cartCount && !isOpen) {
+        setIsOpen(true)
+      }
+
+      totalQuantityRef.current = cartCount
+      
     }
-  }, [isOpen, cart?.length, quantityRef]);
+  }, [isOpen, quantityRef, cart]);
 
   return (
     <>
@@ -134,12 +154,13 @@ export default function CartModal({ cart }: { cart: Product[] | undefined }) {
                       );
                     })}
                   </ul>
-                  <a
+                  <Link
                     href="/payment"
+                    onClick={closeCart}
                     className="block w-full rounded-full bg-[#ffe75f] p-3 text-center text-sm font-medium text-black opacity-90 hover:opacity-100"
                   >
                     Proceed to Checkout
-                  </a>
+                  </Link>
                 </div>
               )}
             </Dialog.Panel>
