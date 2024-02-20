@@ -6,7 +6,6 @@ import LogoSquare from 'components/logo-square';
 import Link from 'next/link';
 import { Suspense, useEffect, useState } from 'react';
 import { HeaderMenuMock } from '../mock';
-import MobileMenu from './mobile-menu';
 
 interface NavbarProps {
   siteName: string | undefined;
@@ -33,7 +32,7 @@ export default function Navbar({ siteName }: NavbarProps) {
 
   return (
     <nav
-      className={`sticky top-0 z-[2000] flex items-center justify-between ${
+      className={`sticky top-0 z-[49] flex items-center justify-between ${
         isScrolled ? 'bg-[#52bf8d] shadow-md' : 'bg-transparent'
       } p-4 lg:px-6`}
     >
@@ -58,9 +57,6 @@ export default function Navbar({ siteName }: NavbarProps) {
             <Cart />
           </Suspense>
         </div>
-        </div>
-        <div className="absolute right-0 flex-none md:hidden">
-          <MobileMenu menu={menu} />
         </div>
       </div>
     </nav>

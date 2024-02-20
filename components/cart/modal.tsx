@@ -6,7 +6,7 @@ import Price from 'components/price';
 import { Product } from 'lib/data-types/products';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
@@ -23,11 +23,16 @@ export default function CartModal({ cart = [] }: { cart: Product[] | undefined }
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
 
-  useEffect(() => {
-    let count = 0
+  const count = useMemo(() => {
+    let totalCount = 0;
     cart?.forEach(item => {
-      count += item.count
-    })
+      totalCount += item.count;
+    });
+    return totalCount;
+  }, [cart]); // Recompute only if 'cart' changes
+
+
+  useEffect(() => {
     totalQuantityRef.current = count
   }, [])
 
@@ -42,17 +47,11 @@ export default function CartModal({ cart = [] }: { cart: Product[] | undefined }
       // Always update the quantity reference
       quantityRef.current = cart?.length;
     } else {
-      let cartCount = 0
-      cart?.forEach(item => {
-        cartCount += item.count
-      })
-      if(totalQuantityRef.current !== cartCount && !isOpen) {
+      if(totalQuantityRef.current !== count && !isOpen) {
         setIsOpen(true)
       }
-
-      totalQuantityRef.current = cartCount
-      
     }
+    totalQuantityRef.current = count
   }, [isOpen, quantityRef, cart]);
 
   return (
@@ -83,8 +82,8 @@ export default function CartModal({ cart = [] }: { cart: Product[] | undefined }
             leaveTo="translate-x-full"
           >
             <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white/80 p-6 text-black backdrop-blur-xl md:w-[390px]">
-              <div className="flex items-center justify-end">
-
+              <div className="flex items-center justify-between">
+              <p className="text-lg font-semibold">My Cart</p>
                 <button aria-label="Close cart" onClick={closeCart}>
                   <CloseCart />
                 </button>
