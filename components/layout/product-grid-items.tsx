@@ -3,21 +3,21 @@ import { GridTileImage } from 'components/grid/tile';
 import { Product } from 'lib/data-types/products';
 import Link from 'next/link';
 
-export default function ProductGridItems({ products }: { products: Product[] }) {
+export default function ProductGridItems({ products, isStoreManager = false }: { products: Product[], isStoreManager?: boolean }) {
   return (
     <>
       {products.map((product) => (
         <Grid.Item key={product.id} className="animate-fadeIn">
           <Link
             className="relative inline-block h-full w-full"
-            href={`/product/${product.id}`}
+            href={`${isStoreManager ? '/store/edit': '/product'}/${product.id}`}
           >
             <GridTileImage
               alt={product.name}
               label={{
                 title: product.name,
                 amount: product.price.toString(),
-                currencyCode: 'CAD'
+                currencyCode: 'CAD',
               }}
               src={product.image_src}
               fill

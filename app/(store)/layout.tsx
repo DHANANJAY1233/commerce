@@ -1,9 +1,8 @@
-import { CartProvider } from 'components/cart/context';
 import Navbar from 'components/layout/navbar';
 import { ensureStartsWith } from 'lib/utils';
 import { Bree_Serif, Open_Sans, Work_Sans } from 'next/font/google';
 import { ReactNode, Suspense } from 'react';
-import './globals.css';
+import '../globals.css';
 
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
@@ -53,16 +52,15 @@ const work = Work_Sans({
   variable: '--font-work'
 });
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children}: { children: ReactNode }) {
+
   return (
     <html lang="en" className={`${inter.variable} ${bree.variable} ${work.variable}`}>
       <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white">
-      <CartProvider>
-        <Navbar siteName={SITE_NAME} />
+        <Navbar siteName={SITE_NAME} isStoreManager />
         <Suspense>
           <main>{children}</main>
         </Suspense>
-        </CartProvider>
       </body>
     </html>
   );

@@ -5,14 +5,13 @@ import OpenCart from 'components/cart/open-cart';
 import LogoSquare from 'components/logo-square';
 import Link from 'next/link';
 import { Suspense, useEffect, useState } from 'react';
-import { HeaderMenuMock } from '../mock';
 
 interface NavbarProps {
   siteName: string | undefined;
+  isStoreManager?: boolean
 }
 
-export default function Navbar({ siteName }: NavbarProps) {
-  const menu = HeaderMenuMock;
+export default function Navbar({ siteName, isStoreManager = false }: NavbarProps) {
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -45,7 +44,7 @@ export default function Navbar({ siteName }: NavbarProps) {
             </h2>
           </Link>
         </div>
-        <div className="absolute right-0 flex gap-5 z-[1]">
+       {!isStoreManager && <div className="absolute right-0 flex gap-5 z-[1]">
           <Link
             href="/order-now"
             className="hidden rounded-[8px] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] text-black md:block"
@@ -57,7 +56,7 @@ export default function Navbar({ siteName }: NavbarProps) {
             <Cart />
           </Suspense>
         </div>
-        </div>
+        </div>}
       </div>
     </nav>
   );
