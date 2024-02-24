@@ -8,7 +8,7 @@ import app from "lib/firebase/init";
 import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const ProductList = ({store_id, collections, isStoreManager = false}: {store_id?: string, collections?: string, isStoreManager?: boolean}) => {
+const ProductList = ({store_id, collections, isStoreManager = false, deleteProduct = false}: {store_id?: string, collections?: string, isStoreManager?: boolean, deleteProduct?: boolean}) => {
   if (!store_id) return notFound();
     const [products, setProducts] = useState<Product[]>([])
     const [isLoading, setIsLoading] = useState(true)
@@ -36,7 +36,7 @@ const ProductList = ({store_id, collections, isStoreManager = false}: {store_id?
      return <div>
       {isLoading ? <div>Loading...</div>: (products.length > 0 ? (
                 <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                  <ProductGridItems products={products} isStoreManager={isStoreManager} />
+                  <ProductGridItems products={products} isStoreManager={isStoreManager} deleteProduct={deleteProduct} />
                 </Grid>
               ) : <div>Sorry, No Items found</div>)}
      </div>

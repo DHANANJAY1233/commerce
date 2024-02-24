@@ -11,6 +11,7 @@ import { ProductDescription } from "./product-description";
 const Product = ({id}: {id: string}) => {
     if (!id) return notFound();
     const [product, setProduct] = useState<Product>()
+    const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
         const db = getFirestore(app);
 
@@ -19,10 +20,12 @@ const Product = ({id}: {id: string}) => {
             if (querySnapshot.exists()) {
                 setProduct({...querySnapshot.data(), id:querySnapshot.id} as Product)
             }
-        })
+        }).catch(e => {
+          console.log("Something went wrong", e)
+        }).finally(() => setIsLoading(false))
       },[])
 
-      return product ? <div className="flex flex-col justify-center rounded-lg p-8 md:p-12 lg:flex-row lg:gap-8">
+      return isLoading ? <p>Loading ...</p>: product ? <div className="flex flex-col justify-center rounded-lg p-8 md:p-12 lg:flex-row lg:gap-8">
             <div className="h-full">
               <Gallery imageSrc={product?.image_src || ''} />
             </div>
@@ -30,7 +33,7 @@ const Product = ({id}: {id: string}) => {
             <div className="basis-full lg:basis-2/6">
               {<ProductDescription product={product} />}
             </div>
-          </div> : <p>Loading ...</p>
+          </div> : <p>Product Not Found</p>
 }
 
 export default Product

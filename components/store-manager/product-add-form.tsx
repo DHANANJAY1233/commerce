@@ -128,6 +128,7 @@ const ProductAddForm = ({ storeId }: {storeId:string}) => {
                 </div>
                 <button
                     type="submit"
+                    disabled={isLoading}
                     className="button lg mt-2 w-full truncate rounded-[8px] bg-[#ffe75f] px-[16px] py-[12px] text-black md:mt-0"
                 >
                    { isLoading ? <LoadingDots className="bg-black" />: 'Add Product'}
