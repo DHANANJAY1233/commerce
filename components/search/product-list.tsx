@@ -13,25 +13,25 @@ const ProductList = ({store_id, collections, isStoreManager = false}: {store_id?
     const [products, setProducts] = useState<Product[]>([])
     const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
-    const db = getFirestore(app);
-    let q;
-    if(store_id && collections) {
-        q = query(collection(db, "items"), where("store_id", "==", store_id), where("collection", "==", collections))
-    } else if(store_id && !collections) {
-        q = query(collection(db, "items"), where("store_id", "==", store_id))
-    } else if(!store_id && collections) {
-        q = query(collection(db, "items"), where("collection", "==", collections))
-    } else {
-        q = query(collection(db, "items"))
-    }
-    getDocs(q).then(querySnapshot => {
-      let items:Product[] = []
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        items.push({...doc.data(),id:doc.id} as Product)
-      });
-      setProducts(items)
-    }).finally(() => setIsLoading(false))
+      const db = getFirestore(app);
+      let q;
+      if(store_id && collections) {
+          q = query(collection(db, "items"), where("store_id", "==", store_id), where("collection", "==", collections))
+      } else if(store_id && !collections) {
+          q = query(collection(db, "items"), where("store_id", "==", store_id))
+      } else if(!store_id && collections) {
+          q = query(collection(db, "items"), where("collection", "==", collections))
+      } else {
+          q = query(collection(db, "items"))
+      }
+      getDocs(q).then(querySnapshot => {
+        let items:Product[] = []
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          items.push({...doc.data(),id:doc.id} as Product)
+        });
+        setProducts(items)
+      }).finally(() => setIsLoading(false))
   },[])
      return <div>
       {isLoading ? <div>Loading...</div>: (products.length > 0 ? (

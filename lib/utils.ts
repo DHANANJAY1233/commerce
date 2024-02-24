@@ -37,3 +37,9 @@ export const validateEnvironmentVariables = () => {
     );
   }
 };
+
+export function htmlToPlainText(html: string) {
+  // Remove HTML tags and unescape HTML entities
+  return html.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+}
+

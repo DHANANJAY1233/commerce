@@ -4,6 +4,7 @@ import FilterList from 'components/layout/search/filter';
 import BreadCrumb from 'components/search/breadcrumb';
 import ProductList from 'components/search/product-list';
 import { sorting } from 'lib/constants';
+import { Suspense } from 'react';
 
 export const runtime = 'edge';
 
@@ -22,7 +23,7 @@ export default async function CategoryPage({
   const { store_id } = searchParams as { [key: string]: string };
 
   return (
-    <>
+    <Suspense>
       <div className="mt-[-80px] bg-[linear-gradient(rgb(82,191,141),rgb(255,209,97))] text-black">
         <div className="container relative z-10 mx-auto px-[1.5rem] pt-16 lg:pt-32">
           <BreadCrumb storeId={store_id || ''} />
@@ -40,6 +41,6 @@ export default async function CategoryPage({
         </div>
       </div>
       <Footer />
-    </>
+    </Suspense>
   );
 }

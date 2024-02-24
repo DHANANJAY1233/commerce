@@ -22,8 +22,8 @@ const Product = ({id}: {id: string}) => {
         })
       },[])
 
-      return product ? <div className="flex flex-col rounded-lg p-8 md:p-12 lg:flex-row lg:gap-8">
-            <div className="h-full w-full basis-full lg:basis-4/6">
+      return product ? <div className="flex flex-col justify-center rounded-lg p-8 md:p-12 lg:flex-row lg:gap-8">
+            <div className="h-full">
               <Gallery imageSrc={product?.image_src || ''} />
             </div>
 

@@ -1,27 +1,13 @@
+import { collections } from 'lib/constants';
 import FilterList from './filter';
 
-const mockCollectionList = [
-  {
-    title: 'All',
-    path: '/search'
-  },
-  {
-    title: 'Egg and Dairy Products',
-    path: '/search/dairy'
-  },
-  {
-    title: 'Bread and Bakery',
-    path: '/search/bread'
-  },
-  {
-    title: 'Fruits and Vegetables',
-    path: '/search/vegetable'
-  }
-];
-
 async function CollectionList() {
-  //const collections = await getCollections();
-  return <FilterList list={mockCollectionList} title="Collections" />;
+  const collectionList = collections.map(collection => ({
+    title: collection.title,
+    path: `/search/${collection.collectionCode}`
+  }))
+  const all = {title: 'All', path: '/search'}
+  return <FilterList list={[all,...collectionList]} title="Collections" />;
 }
 
 export default function Collections() {

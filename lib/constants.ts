@@ -20,12 +20,23 @@ export const sorting: SortFilterItem[] = [
   { title: 'Price: High to low', slug: 'price-desc', sortKey: 'PRICE', reverse: true }
 ];
 
-export const TAGS = {
-  collections: 'collections',
-  products: 'products',
-  cart: 'cart'
-};
+export enum CollectionCodes {
+  DAIRY = 'dairy',
+  BREAD = 'bread',
+  VEG = 'vegetable'
+}
 
-export const HIDDEN_PRODUCT_TAG = 'nextjs-frontend-hidden';
-export const DEFAULT_OPTION = 'Default Title';
-export const SHOPIFY_GRAPHQL_API_ENDPOINT = '/api/2023-01/graphql.json';
+export const collections = [
+  {
+    title: 'Egg and Dairy Products',
+    collectionCode: CollectionCodes.DAIRY
+  },
+  {
+    title: 'Bread and Bakery',
+    collectionCode: CollectionCodes.BREAD
+  },
+  {
+    title: 'Fruits and Vegetables',
+    collectionCode: CollectionCodes.VEG
+  }
+];

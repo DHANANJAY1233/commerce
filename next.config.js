@@ -15,7 +15,8 @@ module.exports = {
       'demo.vercel.store',
       'upload.wikimedia.org',
       'images.unsplash.com',
-      'plus.unsplash.com'
+      'plus.unsplash.com',
+      'firebasestorage.googleapis.com'
     ],
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
