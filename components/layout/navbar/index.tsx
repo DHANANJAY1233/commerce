@@ -37,10 +37,10 @@ export default function Navbar({ siteName, isStoreManager = false }: NavbarProps
     >
       <div className="container relative mx-auto flex w-full items-center justify-center">
         <div className="flex">
-          <Link href="/" className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6">
+          <Link href={isStoreManager ? '/seller' : '/'} className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6">
             <LogoSquare />
             <h2 className="ml-2 flex-none font-header text-[32px] font-light text-black lg:block">
-              {siteName}
+              {siteName} {isStoreManager && 'Seller'}
             </h2>
           </Link>
         </div>
