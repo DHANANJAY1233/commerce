@@ -43,3 +43,14 @@ export function htmlToPlainText(html: string) {
   return html.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'");
 }
 
+export function redirectToLastPageOrDefault(defaultRoute = '/') {
+  // Check if the user can go back in their history
+  if (window.history.length > 1) {
+    // Go back to the last page in the history
+    window.history.back();
+  } else {
+    // Redirect to the root path if there's no history
+    window.location.href = defaultRoute;
+  }
+}
+

@@ -5,13 +5,14 @@ import OpenCart from 'components/cart/open-cart';
 import LogoSquare from 'components/logo-square';
 import Link from 'next/link';
 import { Suspense, useEffect, useState } from 'react';
+import { User } from './user';
 
 interface NavbarProps {
   siteName: string | undefined;
-  isStoreManager?: boolean
+  userType?: "shopper" | "seller" | "executive"
 }
 
-export default function Navbar({ siteName, isStoreManager = false }: NavbarProps) {
+export default function Navbar({ siteName, userType = 'shopper' }: NavbarProps) {
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -37,26 +38,28 @@ export default function Navbar({ siteName, isStoreManager = false }: NavbarProps
     >
       <div className="container relative mx-auto flex w-full items-center justify-center">
         <div className="flex">
-          <Link href={isStoreManager ? '/seller' : '/'} className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6">
+          <Link href={userType === 'seller' ? '/seller' : '/'} className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6">
             <LogoSquare />
             <h2 className="ml-2 flex-none font-header text-[32px] font-light text-black lg:block">
-              {siteName} {isStoreManager && 'Seller'}
+              {siteName} {userType === 'seller' && 'Seller'}
             </h2>
           </Link>
         </div>
-       {!isStoreManager && <div className="absolute right-0 flex gap-5 z-[1]">
-          <Link
-            href="/order-now"
-            className="hidden rounded-[8px] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] text-black md:block"
-          >
-            Order Now
-          </Link>
-          <div>
-          <Suspense fallback={<OpenCart />}>
-            <Cart />
-          </Suspense>
+        <div className="absolute right-0 flex gap-5 z-[1]">
+          {userType === 'shopper' && 
+            <>
+              <Link href="/order-now" className="hidden rounded-[8px] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] text-black md:block">
+                Order Now
+              </Link>
+              <div>
+                <Suspense fallback={<OpenCart />}>
+                  <Cart />
+                </Suspense>
+              </div>
+            </>
+          }
+          <User userType={userType} />
         </div>
-        </div>}
       </div>
     </nav>
   );
