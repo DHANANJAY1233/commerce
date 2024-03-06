@@ -30,7 +30,7 @@ export const User = ({userType = 'shopper'}: {userType?: 'shopper' | 'seller' | 
             <div className="hidden rounded-[50%] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] text-black md:block" onClick={toggleDropdown}>
                 {user.name[0]}
                 {isDropdownVisible && (
-                    <div className="dropdown-menu absolute mt-2 right-0 bg-white shadow-lg rounded-md py-1">
+                    <div className="dropdown-menu absolute mt-2 right-0 bg-white shadow-lg rounded-md py-1 w-max">
                         <button className="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={logout}>Log out</button>
                     </div>
                 )}

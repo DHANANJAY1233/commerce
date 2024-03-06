@@ -1,5 +1,5 @@
 import Footer from 'components/layout/footer';
-import ProductEditForm from 'components/store-manager/product-edit-form';
+import ProductEditForm from 'components/store-manager/form/product-edit-form';
 
 export const runtime = 'edge';
 

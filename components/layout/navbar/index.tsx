@@ -58,6 +58,12 @@ export default function Navbar({ siteName, userType = 'shopper' }: NavbarProps) 
               </div>
             </>
           }
+          {
+            userType === 'seller' && 
+              <Link href="/store" className="hidden rounded-[8px] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] text-black md:block">
+                Store Manager
+              </Link>
+          }
           <User userType={userType} />
         </div>
       </div>

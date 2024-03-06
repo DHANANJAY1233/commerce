@@ -1,4 +1,5 @@
 import Navbar from 'components/layout/navbar';
+import { StoreProvider } from 'components/store-manager/store-context';
 import { ensureStartsWith } from 'lib/utils';
 import { ReactNode, Suspense } from 'react';
 import '../globals.css';
@@ -33,11 +34,11 @@ export const metadata = {
 export default async function RootLayout({ children}: { children: ReactNode }) {
 
   return (
-    <>
+    <StoreProvider>
       <Navbar siteName={SITE_NAME} userType='seller' />
       <Suspense>
         <main>{children}</main>
       </Suspense>
-    </>
+    </StoreProvider>
   );
 }

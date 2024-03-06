@@ -20,7 +20,7 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
         const docRef = doc(db, "users", user.uid);
         getDoc(docRef).then((querySnapshot) => {
             if (querySnapshot.exists()) {
-                setCurrentUser({...querySnapshot.data()} as User)
+                setCurrentUser({...querySnapshot.data(), id: user.uid} as User)
             }else {
               setCurrentUser(null)
             }

@@ -5,17 +5,15 @@ import { Gallery } from "components/product/gallery";
 import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { collections } from "lib/constants";
-import { Product } from "lib/data-types";
+import { Store } from "lib/data-types";
 import app from "lib/firebase/init";
-import { notFound } from "next/navigation";
-import { useEffect, useState } from "react";
-import Input from "./form/input";
+import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+import Input from "./input";
 
 
-const ProductEditForm = ({ id }: {id:string}) => {
-    if (!id) return notFound();
+const ProductAddForm = ({ storeId }: {storeId:string}) => {
     const [isLoading, setIsLoading] = useState(false)
-    const [isProductLoading, setIsproductLoading] = useState(true)
     const [formData, setFormData] = useState({
         name: '',
         price: 0,
@@ -23,25 +21,7 @@ const ProductEditForm = ({ id }: {id:string}) => {
         count: 0,
         description_html: '',
     });
-    const [product, setProduct] = useState<Product>()
     const [productImage, setProductImage] = useState(null)
-
-    useEffect(() => {
-        const db = getFirestore(app);
-        const docRef = doc(db, "items", id);
-        getDoc(docRef).then((querySnapshot) => {
-            if (querySnapshot.exists()) {
-                setFormData({
-                    name: querySnapshot.data().name || '',
-                    collection: querySnapshot.data().collection || '',
-                    count: querySnapshot.data().count || 0,
-                    description_html: querySnapshot.data().description_html || "",
-                    price: querySnapshot.data().price || 0,
-                })
-                setProduct({...querySnapshot.data(), id:querySnapshot.id} as Product)
-            }
-        }).finally(() => setIsproductLoading(false))
-      },[])
 
     const handleInputChange = (e: any) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,20 +30,27 @@ const ProductEditForm = ({ id }: {id:string}) => {
     const handleSubmit = async (e:any) => {
         e.preventDefault();
         setIsLoading(true)
-        let imageUrl
-        if(productImage) {
-            imageUrl = await uploadImage(product?.id || "")
-        }
+        const id = uuidv4()
+        const imageUrl = await uploadImage(id)
         try {
             const db = getFirestore(app);
-            const docRef = doc(db, "items", id);
-            await setDoc(docRef, {...formData, ...(imageUrl && {image_src: imageUrl})}, {merge: true});
-            console.log('Document updated with ID: ', id);
-            window.alert("Product modified successfully!!")
-            location.reload() 
+            const docRef = doc(db, "shops", storeId);
+            const querySnapshot = await getDoc(docRef)
+            if (querySnapshot.exists()) {
+                const store = { ...querySnapshot.data(), id: querySnapshot.id } as Store
+                await setDoc(doc(db, "items", id), {...formData, store_id: store.id, store_name: store.name, image_src: imageUrl});
+                console.log('Document written with ID: ', id);
+                window.alert("Product added successfully!!")
+                location.reload()
+            }else {
+                window.alert("Couldn't find store!")
+                console.error("Couldn't find store!");
+            }
+            
+            
         } catch (error) {
-            window.alert("Something went wrong while modifying product")
-            console.error('Error modifying document: ', error);
+            window.alert("Something went wrong while adding product")
+            console.error('Error adding document: ', error);
         } finally {
             setIsLoading(false)
         }
@@ -91,8 +78,7 @@ const ProductEditForm = ({ id }: {id:string}) => {
 
 
 
-    return isProductLoading ? <div>Loading ...</div>: (
-        product ? <form noValidate onSubmit={handleSubmit}>
+    return <form noValidate onSubmit={handleSubmit}>
         <div className="mx-auto flex max-w-screen-2xl flex-col gap-8 pb-4 text-black md:flex-row">
             <div className="min-h-screen w-full flex-1 md:order-none">
                 <div className="mb-4 flex flex-col gap-4 lg:flex-row">
@@ -145,18 +131,17 @@ const ProductEditForm = ({ id }: {id:string}) => {
                     disabled={isLoading}
                     className="button lg mt-2 w-full truncate rounded-[8px] bg-[#ffe75f] px-[16px] py-[12px] text-black md:mt-0"
                 >
-                   { isLoading ? <LoadingDots className="bg-black" />: 'Update Product'}
+                   { isLoading ? <LoadingDots className="bg-black" />: 'Add Product'}
                 </button>
             </div>
             <div className="flex-1 md:order-last md:w-[125px]">
                 <div className="w-full basis-full lg:basis-4/6">
                     <h2>Product Image Preview</h2>
-                    {productImage ? <Gallery imageSrc={URL.createObjectURL(productImage) || ''} /> : product?.image_src ? <Gallery imageSrc={product.image_src} /> : <p className="text-[14px]">No Image Uploaded</p>}
+                    {productImage ? <Gallery imageSrc={URL.createObjectURL(productImage) || ''} /> : <p className="text-[14px]">No Image Uploaded</p>}
                 </div>
             </div>
         </div>
-    </form>: <div>Product detail not found!</div>
-    )
+    </form>
 }
 
-export default ProductEditForm
+export default ProductAddForm
