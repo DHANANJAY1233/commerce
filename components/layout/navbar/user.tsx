@@ -19,6 +19,7 @@ export const User = ({userType = 'shopper'}: {userType?: 'shopper' | 'seller' | 
         signOut(auth).then(() => {
           // Sign-out successful.
           console.log('Logout successful');
+          window.location.href = userType === 'shopper' ? '/order-now' : userType === 'seller' ? '/seller': '/executive'
         }).catch((error) => {
           // An error happened.
           console.error('Logout error:', error);
@@ -39,7 +40,7 @@ export const User = ({userType = 'shopper'}: {userType?: 'shopper' | 'seller' | 
     }
 
     return (
-        <Link href={userType === 'shopper' ? '/login' : '/seller/login'} className="hidden rounded-[8px] border-2 border-black bg-transparent px-[16px] py-[6px] text-[20px] text-black md:block">
+        <Link href={userType === 'shopper' ? '/login' : userType === 'seller' ? '/seller/login': '/executive/login'} className="hidden rounded-[8px] border-2 border-black bg-transparent px-[16px] py-[6px] text-[20px] text-black md:block">
             Log In
         </Link>
     )

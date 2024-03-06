@@ -41,7 +41,7 @@ export default function Navbar({ siteName, userType = 'shopper' }: NavbarProps) 
           <Link href={userType === 'seller' ? '/seller' : '/'} className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6">
             <LogoSquare />
             <h2 className="ml-2 flex-none font-header text-[32px] font-light text-black lg:block">
-              {siteName} {userType === 'seller' && 'Seller'}
+              {siteName} {userType === 'seller' ? 'Seller': userType === 'executive' ? 'Executive': ''}
             </h2>
           </Link>
         </div>
@@ -61,8 +61,14 @@ export default function Navbar({ siteName, userType = 'shopper' }: NavbarProps) 
           {
             userType === 'seller' && 
               <Link href="/store" className="hidden rounded-[8px] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] text-black md:block">
-                Store Manager
+                Manage Store
               </Link>
+          }
+          {
+            userType === 'executive' && 
+            <Link href="/delivery" className="hidden rounded-[8px] border-2 border-[#ffe75f] bg-[#ffe75f] px-[16px] py-[6px] text-[20px] text-black md:block">
+              Manage Deliveries
+            </Link>
           }
           <User userType={userType} />
         </div>
