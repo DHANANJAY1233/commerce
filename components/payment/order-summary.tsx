@@ -1,3 +1,5 @@
+'use client';
+
 import { CartContext } from 'components/cart/context';
 import { useContext, useEffect, useState } from 'react';
 import OrderItem from './order-item';
@@ -16,7 +18,7 @@ const OrderSummary = () => {
     setSubtotal(subtotalVal)
   }, [state])
   return (
-    <div className="mx-auto flex max-w-screen-2xl flex-col gap-8 px-4 pb-4 text-black md:flex-row">
+    <>
       <div className="min-h-screen w-full flex-1 md:order-none">
         <h1 className="mb-6 font-work text-[30px] font-medium leading-[36px] md:text-[35px] md:leading-[42px] xl:text-[48px] xl:leading-[56px]">
           Order Summary
@@ -42,7 +44,7 @@ const OrderSummary = () => {
       <div className="flex-1 md:order-last md:w-[125px]">
         <PaymentDetail total={subtotal + delivery} />
       </div>
-    </div>
+    </>
 
   );
 };

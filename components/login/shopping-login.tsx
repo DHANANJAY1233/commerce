@@ -5,6 +5,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { collection, getDocs, getFirestore, query, where } from "firebase/firestore";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import app from "lib/firebase/init";
+import { redirectToLastPageOrDefault } from "lib/utils";
 import Link from "next/link";
 import * as Yup from 'yup';
 
@@ -37,8 +38,8 @@ export const ShoppingLogin = () => {
             }
             await signInWithEmailAndPassword(auth, values.email, values.password);
             alert('Login successful!');
-            window.location.href = '/order-now'
             // Redirect or perform additional actions after successful login
+            redirectToLastPageOrDefault('/order-now')
         } catch (error: any) { // Consider using a more specific error type if possible
             console.log('Error', error)
             alert("Email and Password don't match!")
