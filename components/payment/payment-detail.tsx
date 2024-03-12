@@ -1,57 +1,70 @@
+import LoadingDots from 'components/loading-dots';
+import { AuthContext } from 'lib/firebase/auth';
 import Image from 'next/image';
+import { FormEventHandler, useContext } from 'react';
 
-const PaymentDetail = ({ total }: { total: number }) => {
-  const paymentMethods = [
-    {
-      imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg',
-      name: 'PayPal'
-    },
-    {
-      imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg',
-      name: 'Apple Pay'
-    },
-    {
-      imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg',
-      name: 'Credit Card'
-    },
-    {
-      imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg',
-      name: 'Google Pay'
-    }
-  ];
+const paymentMethods = [
+  {
+    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg',
+    name: 'PayPal'
+  },
+  {
+    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg',
+    name: 'Apple Pay'
+  },
+  {
+    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg',
+    name: 'Credit Card'
+  },
+  {
+    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg',
+    name: 'Google Pay'
+  }
+];
+
+const PaymentDetail = ({ total, isLoading, handleSubmit }: { total: number, isLoading: boolean, handleSubmit: FormEventHandler<HTMLFormElement> }) => {
+
+  const user = useContext(AuthContext)
+
   return (
     <div>
       <h1 className="mb-6 font-work text-[30px] font-medium leading-[36px] md:text-[35px] md:leading-[42px] xl:text-[48px] xl:leading-[56px]">
         Payment Details
       </h1>
       <p className="mb-6">Complete your purchase by providing your payment details order</p>
-      <form noValidate>
+      <form noValidate onSubmit={handleSubmit}>
         <div className="mb-4 flex flex-col gap-4 lg:flex-row">
-          <div className="flex-1">
-            <label className="mb-1 block text-[14px] leading-[21px] text-black xl:text-[16px] xl:leading-[21px]">
-              Name
-            </label>
-            <input
-              type="text"
-              className="block w-full appearance-none rounded-[8px] bg-[rgba(0,0,0,0.26)] px-[8px] py-[12px] !placeholder-current !shadow-none !ring-transparent"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="mb-1 block text-[14px] leading-[21px] text-black xl:text-[16px] xl:leading-[21px]">
-              Email
-            </label>
-            <input
-              type="email"
-              className="block w-full appearance-none rounded-[8px] bg-[rgba(0,0,0,0.26)] px-[8px] py-[12px] !placeholder-current !shadow-none !ring-transparent"
-            />
-          </div>
+            <div className="flex-1">
+              <label className="mb-1 block text-[14px] leading-[21px] text-black xl:text-[16px] xl:leading-[21px]">
+                Name
+              </label>
+              <input
+                type="text"
+                readOnly
+                value={user?.name}
+                className="block w-full appearance-none rounded-[8px] bg-[rgba(0,0,0,0.26)] px-[8px] py-[12px] !placeholder-current !shadow-none !ring-transparent"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="mb-1 block text-[14px] leading-[21px] text-black xl:text-[16px] xl:leading-[21px]">
+                Email
+              </label>
+              <input
+                type="email"
+                readOnly
+                value={user?.email}
+                className="block w-full appearance-none rounded-[8px] bg-[rgba(0,0,0,0.26)] px-[8px] py-[12px] !placeholder-current !shadow-none !ring-transparent"
+              />
+            </div>
         </div>
         <div className="mb-4">
           <label className="mb-1 block text-[14px] leading-[21px] text-black xl:text-[16px] xl:leading-[21px]">
-            Shipping Address
+            Delivery Address
           </label>
-          <textarea
-            rows={5}
+          <input
+            readOnly
+            value={user?.address}
+            type='text'
             className="block w-full appearance-none rounded-[8px] bg-[rgba(0,0,0,0.26)] px-[8px] py-[12px] !placeholder-current !shadow-none !ring-transparent"
           />
         </div>
@@ -62,20 +75,12 @@ const PaymentDetail = ({ total }: { total: number }) => {
             </label>
             <input
               type="text"
-              className="block w-full appearance-none rounded-[8px] bg-[rgba(0,0,0,0.26)] px-[8px] py-[12px] !placeholder-current !shadow-none !ring-transparent"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="mb-1 block text-[14px] leading-[21px] text-black xl:text-[16px] xl:leading-[21px]">
-              Zipcode
-            </label>
-            <input
-              type="text"
+              readOnly
+              value={user?.phone}
               className="block w-full appearance-none rounded-[8px] bg-[rgba(0,0,0,0.26)] px-[8px] py-[12px] !placeholder-current !shadow-none !ring-transparent"
             />
           </div>
         </div>
-
         <div className="my-8">
           <p className="mb-1">Choose Payment Method</p>
           <div className="flex gap-[30px]">
@@ -101,7 +106,7 @@ const PaymentDetail = ({ total }: { total: number }) => {
             type="submit"
             className="button lg mt-2 w-full truncate rounded-[8px] bg-[#ffe75f] px-[16px] py-[12px] text-black md:mt-0"
           >
-            Pay ${total} CAD
+            {isLoading ? <LoadingDots className='bg-black' /> : `Pay $${total} CAD`}
           </button>
         </div>
       </form>

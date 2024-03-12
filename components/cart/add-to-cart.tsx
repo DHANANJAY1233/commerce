@@ -7,12 +7,13 @@ import { useContext } from 'react';
 import { CartContext } from './context';
 import { CartActionTypes } from './context/reducers';
 
-function SubmitButton({addToCartHandler}: {addToCartHandler: Function}) {
+function SubmitButton({addToCartHandler, outOfStock = false}: {addToCartHandler: Function, outOfStock: boolean}) {
   const buttonClasses =
     'relative flex w-full items-center justify-center rounded-full bg-[rgb(82,191,141)] p-4 tracking-wide text-white';
 
   return (
     <button
+      disabled={outOfStock}
       onClick={() => addToCartHandler()}
       aria-label="Add to cart"
       // aria-disabled={pending}
@@ -23,7 +24,7 @@ function SubmitButton({addToCartHandler}: {addToCartHandler: Function}) {
       <div className="absolute left-0 ml-4">
         <PlusIcon className="h-5" />
       </div>
-      Add To Cart
+      {outOfStock ? 'Out of Stock': 'Add To Cart'}
     </button>
   );
 }
@@ -59,6 +60,6 @@ export function AddToCart({product}:{product: Product}) {
   }
 
   return (
-    <SubmitButton addToCartHandler={() => addToCart(product)}  />
+    <SubmitButton outOfStock={product.count === 0} addToCartHandler={() => addToCart(product)}  />
   );
 }

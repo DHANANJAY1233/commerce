@@ -15,7 +15,7 @@ interface SignupFormValues {
     email: string;
     phone: string;
     address: string;
-    loc: { lat: number; long: number };
+    loc: { latitude: number; longitude: number };
     password: string;
     confirmPassword: string
 }
@@ -85,7 +85,7 @@ export const ShoppingSignUp = ({ googleMapsApiKey }: { googleMapsApiKey: string 
         setSubmitting(false);
     };
 
-    return isLoaded ? <Formik initialValues={{ name: '', email: '', phone: '', address: '', password: '', confirmPassword: '', loc: {lat: 0, long: 0} }} validationSchema={signupSchema} onSubmit={handleSignup}>
+    return isLoaded ? <Formik initialValues={{ name: '', email: '', phone: '', address: '', password: '', confirmPassword: '', loc: {latitude: 0, longitude: 0} }} validationSchema={signupSchema} onSubmit={handleSignup}>
         {({ isSubmitting, setFieldValue, setFieldError }) => (
             <Form>
                 <div className="mx-auto flex max-w-screen-2xl flex-col gap-8 pb-4 text-black md:flex-row">
@@ -146,8 +146,8 @@ export const ShoppingSignUp = ({ googleMapsApiKey }: { googleMapsApiKey: string 
                                         }
                                         setFieldValue('address', place?.formatted_address ?? '')
                                         const latLng = {
-                                            lat: place?.geometry?.location?.lat() ?? 0,
-                                            long: place?.geometry?.location?.lng() ?? 0
+                                            latitude: place?.geometry?.location?.lat() ?? 0,
+                                            longitude: place?.geometry?.location?.lng() ?? 0
                                         };
                                         setFieldValue('loc', latLng);
                                     }}
