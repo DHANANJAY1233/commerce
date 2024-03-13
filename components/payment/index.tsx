@@ -3,7 +3,7 @@
 import { AuthContext } from 'lib/firebase/auth';
 import { redirect } from 'next/navigation';
 import { useContext } from 'react';
-import Order from './order';
+import OrderPayment from './order-payment';
 
 const Payment = () => {
   const user = useContext(AuthContext);
@@ -15,7 +15,7 @@ const Payment = () => {
   }
   
   return (
-      <Order />
+      <OrderPayment />
   );
 };
 

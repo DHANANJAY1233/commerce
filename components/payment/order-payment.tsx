@@ -2,15 +2,14 @@
 
 import { CartContext } from 'components/cart/context';
 import { CartActionTypes } from 'components/cart/context/reducers';
-import { addDoc, collection, doc, getFirestore, increment, updateDoc } from 'firebase/firestore';
-import { Order } from 'lib/data-types/orders';
+import { Timestamp, addDoc, collection, doc, getFirestore, increment, updateDoc } from 'firebase/firestore';
 import { AuthContext } from 'lib/firebase/auth';
 import app from 'lib/firebase/init';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { OrderSummary } from './order-summary';
 import PaymentDetail from './payment-detail';
 
-const Order = () => {
+const OrderPayment = () => {
   const { state, dispatch } = useContext(CartContext)
   const user = useContext(AuthContext)
   const [subtotal, setSubtotal] = useState(0)
@@ -28,14 +27,15 @@ const Order = () => {
     e.preventDefault()
     setIsLoading(true)
     const db = getFirestore(app)
-    const order:Order = {
+    const order = {
       cart: state,
       delivery, //charges
       status: 'created',
       subtotal,
       user_id: user?.id || '',
       user_loc: user?.loc || {latitude: 0, longitude: 0},
-      user_name: user?.name || ''
+      user_name: user?.name || '',
+      createdAt: Timestamp.now()
     }
     try {
       const docRef = await addDoc(collection(db, 'orders'), order)
@@ -71,4 +71,4 @@ const Order = () => {
   );
 };
 
-export default Order;
+export default OrderPayment;
